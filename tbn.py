@@ -14,35 +14,28 @@ def remove_punctuation(text):
         if char not in punctuations:       
             no_punc = no_punc + char
     return no_punc
+
 #storing the puntuation free text
 #data['clean_msg']= data['v2'].apply(lambda x:remove_punctuation(x))
 #data.head()
 
 
 
-#Import CSV 
+#Import CSV (one original and one copy)
 file = open('reviews.csv', errors="ignore")
+file1 = open('reviews.csv', errors="ignore")
 reader = csv.reader(file, delimiter = ',')
+reader1 = csv.reader(file1, delimiter = ',')
+data_original = list(reader1)
 data = list(reader)
-#data[2][1]
-#Out[109]: 'B08W8DGK3X'
-#data[1][2]
-#Out[112]: "\nUPDATE: Support 
 
-#data = reviews_df.to_dict(orient='dict', into=<class 'dict'>)
-#print(df.loc[[159220]])
 
-data_copy = data
-
-#for key, value in data_copy.items():
-#    data_copy[]
+## remove remove_punctuation from copy and insert it in new_data
+new_data = data
+for i in range(1,len(data)):
+    #new_data[data[i][0]] = data[i][1]
+    new_data[i][1] = remove_punctuation(new_data[i][1])
         
-
-
-
-#for key in reviews_df['asin']:
-##    for value in reviews_df['review']:
-#        data[key] = value
         
     
 
