@@ -5,6 +5,7 @@ import string
 string.punctuation
 
 
+
 #defining the function to remove punctuation
 def remove_punctuation(text):
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
@@ -23,20 +24,27 @@ def remove_punctuation(text):
 
 #Import CSV (one original and one copy)
 file = open('reviews.csv', errors="ignore")
-file1 = open('reviews.csv', errors="ignore")
 reader = csv.reader(file, delimiter = ',')
-reader1 = csv.reader(file1, delimiter = ',')
-data_original = list(reader1)
-data = list(reader)
+data_original = list(reader)
 
 
-## remove remove_punctuation from copy and insert it in new_data
-new_data = data
-for i in range(1,len(data)):
-    #new_data[data[i][0]] = data[i][1]
-    new_data[i][1] = remove_punctuation(new_data[i][1])
+## remove remove_punctuation from copy and insert it in new_data(dictionary)
+new_data = {}
+for i in range(1,len(data_original)):
+    asic = data_original[i][0]
+    review = remove_punctuation(data_original[i][1])#calling the remove punctuation function
+    if asic in new_data:
+        new_data[asic].append(review)
+    else:
+        new_data[asic] = [review]
         
-        
-    
+#check the results 
+'''       
+for i in new_data.keys():
+    for j in range(0,len(new_data[i])):
+        print(i, new_data[i][j])
+'''  
+
+
 
 
