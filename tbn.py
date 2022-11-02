@@ -1,8 +1,11 @@
-
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 import csv
 import string
 #library that contains punctuation
 string.punctuation
+#nltk.download('stopwords')
 
 
 
@@ -16,9 +19,9 @@ def remove_punctuation(text):
             no_punc = no_punc + char
     return no_punc
 
-#storing the puntuation free text
-#data['clean_msg']= data['v2'].apply(lambda x:remove_punctuation(x))
-#data.head()
+def apply_tokenizing(text):
+    tokenized_text = word_tokenize(text)
+    return tokenized_text
 
 
 
@@ -45,6 +48,16 @@ for i in new_data.keys():
         print(i, new_data[i][j])
 '''  
 
+tokenized_data = {}
+#tokenize the new_data results
+for i in new_data:
+    for j in range(0, len(new_data[i])):
+        asic = i
+        tokenized_review = apply_tokenizing(new_data[i][j])
+        if asic in tokenized_data:
+            tokenized_data[asic].append(tokenized_review)
+        else:
+            tokenized_data[asic] = [tokenized_review]
 
 
 

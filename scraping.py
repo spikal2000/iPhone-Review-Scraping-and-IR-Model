@@ -5,7 +5,7 @@ Created on Tue Oct 25 13:18:29 2022
 @author: spika
 """
 
-import pandas as pd
+import csv
 import requests
 from bs4 import BeautifulSoup
 
@@ -90,25 +90,14 @@ for p in reviews.keys():
     #products.append(getProductNames(i))
     products[p] = getProductNames(p)
 
+temp_reviews = []
+for i in reviews:
+    for j in range(0, len(reviews[i])):
+        temp_reviews.append({'asic': i, 'review':reviews[i][j]})
 
-#reviews_2 = {}
-#reviews_df = pd.DataFrame()
-keys = []
-values = []
-for asin in reviews.keys():
-    for rreviews in reviews.values():
-        for _review in rreviews:
-            keys.append(asin)
-            values.append(_review)
-    
-        
-
-#p_a_df = pd.DataFrame({'data-asin':asins, 'product':products})
-products_df = pd.DataFrame({'asin': products.keys(), 'product': products.values()}).set_index('asin')
-reviews_df = pd.DataFrame({'asin':keys, 'review':values}).set_index('asin')
-#new_df = products_df.merge(reviews_df, on='asins')
-products_df.to_csv('products.csv') #comma seperation
-reviews_df.to_csv('reviews.csv')
-
-
-
+#extract csv file
+fieldNames = ['asic', 'review']
+with open('reviews.csv', 'w', encoding='UTF8') as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames = fieldNames)
+    writer.writeheader()
+    writer.writerows(temp_reviews)
