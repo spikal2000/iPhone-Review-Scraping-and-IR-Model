@@ -44,7 +44,7 @@ query = "graphics+cards"
 #url = amazon_url + query
 
 #Without the header amazon will not give me access
-header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.94 Safari/537.36 ',
+header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 ',
           'referer': 'https://www.amazon.com/s?k=graphics+cards&crid=3B1INJ90VDLEB&sprefix=graphics+cards%2Caps%2C448&ref=nb_sb_noss_1'}
 
 #https://www.amazon.com/s?k=iphone&crid=399XGN9Z3Y6UG&sprefix=ipho%2Caps%2C336&ref=nb_sb_noss_2
@@ -97,7 +97,7 @@ for i in reviews:
 
 #extract csv file
 fieldNames = ['asic', 'review']
-with open('reviews.csv', 'w', encoding='UTF8') as csvfile:
+with open('reviews.csv', 'w', encoding='UTF8', newline='') as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames = fieldNames)
     writer.writeheader()
     writer.writerows(temp_reviews)
