@@ -3,6 +3,8 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import csv
 import string
+from nltk.stem import *
+from nltk.stem.porter import *
 #library that contains punctuation
 string.punctuation
 #nltk.download('stopwords')
@@ -26,6 +28,11 @@ def apply_tokenizing(text):
 def applyStopWords(doc):
     removeStopWords = [word for word in doc if not word in stopwords.words()]
     return removeStopWords
+
+def applyStemmer(doc):
+    porter = PorterStemmer()
+    singles_porter = [porter.stem(word) for word in doc]
+    return singles_porter
     
 
 
@@ -84,7 +91,11 @@ for key in tokenized_data:
         else:
             tokenized_stopword_data[asic] = [stopWordReview]
   
-
+#stemming_data = {}
+for key in tokenized_stopword_data:
+    asic = key 
+    for j in range(len(tokenized_stopword_data[key])):
+        tokenized_stopword_data[key][j] = applyStemmer(tokenized_stopword_data[key][j])
 
 
 
