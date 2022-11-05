@@ -23,6 +23,10 @@ def apply_tokenizing(text):
     tokenized_text = word_tokenize(text)
     return tokenized_text
 
+def applyStopWords(doc):
+    removeStopWords = [word for word in doc if not word in stopwords.words()]
+    return removeStopWords
+    
 
 
 #Import CSV (one original and one copy)
@@ -58,6 +62,31 @@ for i in new_data:
             tokenized_data[asic].append(tokenized_review)
         else:
             tokenized_data[asic] = [tokenized_review]
+'''
+for i in range(len(s)):    
+    s[i] = s[i].lower()
+'''
+for key in tokenized_data:
+    asic = key
+    for i in tokenized_data[key]:
+        for j in range(0,len(i)):
+            i[j] =  i[j].lower()
+            
+
+
+tokenized_stopword_data = {}
+for key in tokenized_data:
+    asic = key
+    for j in tokenized_data[key]:
+        stopWordReview = applyStopWords(j)
+        if asic in tokenized_stopword_data:
+            tokenized_stopword_data[asic].append(stopWordReview)
+        else:
+            tokenized_stopword_data[asic] = [stopWordReview]
+  
+
+
+
 
 
 
