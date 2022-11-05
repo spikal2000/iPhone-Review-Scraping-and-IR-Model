@@ -80,8 +80,8 @@ for key in tokenized_data:
             i[j] =  i[j].lower()
             
 
-
-tokenized_stopword_data = {}
+#apply stopwords
+tokenized_stopword_data = {} # with stemming
 for key in tokenized_data:
     asic = key
     for j in tokenized_data[key]:
@@ -90,12 +90,32 @@ for key in tokenized_data:
             tokenized_stopword_data[asic].append(stopWordReview)
         else:
             tokenized_stopword_data[asic] = [stopWordReview]
-  
+#apply stemmer
 #stemming_data = {}
 for key in tokenized_stopword_data:
     asic = key 
     for j in range(len(tokenized_stopword_data[key])):
         tokenized_stopword_data[key][j] = applyStemmer(tokenized_stopword_data[key][j])
+
+'''
+# inverted index
+inverted_index = {}
+for key in tokenized_stopword_data:
+    for j, doc in enumerate(tokenized_stopword_data[key]):
+        for word in doc:
+            if word in inverted_index:
+                inverted_index[word].add(j)
+            else:
+                inverted_index[word] = {j}
+'''
+
+
+
+
+
+
+
+
 
 
 
