@@ -37,10 +37,10 @@ def applyStemmer(doc):
 
 
 #Import CSV (one original and one copy)
-file = open('reviews.csv', errors="ignore")
+file = open('reviews.csv',errors="ignore"  )
 reader = csv.reader(file, delimiter = ',')
 data_original = list(reader)
-
+#data_original = [data_original[1][1], data_original[2][1]]
 
 ## remove remove_punctuation from copy and insert it in new_data(dictionary)
 new_data = {}
@@ -91,7 +91,6 @@ for key in tokenized_data:
         else:
             tokenized_stopword_data[asic] = [stopWordReview]
 #apply stemmer
-#stemming_data = {}
 for key in tokenized_stopword_data:
     asic = key 
     for j in range(len(tokenized_stopword_data[key])):
