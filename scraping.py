@@ -40,12 +40,12 @@ def searchReviews(reviewLink):
 
 
 #query = "graphics+cards"
-query = "graphics+cards"
+query = "iphone"
 #url = amazon_url + query
 
 #Without the header amazon will not give me access
 header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 ',
-          'referer': 'https://www.amazon.com/s?k=graphics+cards&crid=3B1INJ90VDLEB&sprefix=graphics+cards%2Caps%2C448&ref=nb_sb_noss_1'}
+          'referer': 'https://www.amazon.com/s?k=iphone&crid=2863RYB3M0F16&sprefix=iphone+14%2Caps%2C257&ref=nb_sb_noss_2'}
 
 #https://www.amazon.com/s?k=iphone&crid=399XGN9Z3Y6UG&sprefix=ipho%2Caps%2C336&ref=nb_sb_noss_2
 
@@ -55,7 +55,7 @@ header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5
 #&page=4&qid=1666777740&ref=sr_pg_4
 #extract the asin numbers 
 asins = []
-for j in range(1):
+for j in range(20):
     page = getAmazonSearch(query + '&page='+ str(j) + '&qid=1666777740&ref=sr_pg_'+ str(j))
     soup = BeautifulSoup(page.content, "lxml") 
     for i in soup.findAll("div", {'class': 's-result-item s-asin sg-col-0-of-12 sg-col-16-of-20 sg-col s-widget-spacing-small sg-col-12-of-16'}):
@@ -75,7 +75,7 @@ for i in range(0,len(asins)):
 
 reviews = {}
 for key, value in links.items():
-    for j in range(1):
+    for j in range(10):
         page = searchReviews(value + '&pageNumber=' + str(j))
         soup = BeautifulSoup(page.content, "lxml")
         for k in soup.findAll("span", {'data-hook' : 'review-body'}):
@@ -97,7 +97,7 @@ for i in reviews:
 
 #extract csv file
 fieldNames = ['asic', 'review']
-with open('reviews.csv', 'w', encoding='UTF8', newline='') as csvfile:
+with open('reviews1.csv', 'w', encoding='UTF8', newline='') as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames = fieldNames)
     writer.writeheader()
     writer.writerows(temp_reviews)

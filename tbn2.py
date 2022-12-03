@@ -47,7 +47,7 @@ def applyStemmer(doc):
 
 
 #Import CSV (one original and one copy)
-file = open('reviews.csv',errors="ignore"  )
+file = open('reviews1.csv',errors="ignore"  )
 reader = csv.reader(file, delimiter = ',')
 data_original = list(reader)
 
@@ -233,10 +233,10 @@ def rank(query):
         '''
     #rule3: add top tf-idf results
     
-        docs_r.insert(len(docs_r), tfscore[0][0])
-        docs_r.insert(len(docs_r), tfscore[1][0])
-        docs_r.insert(len(docs_r), tfscore[2][0])
-        docs_r.insert(len(docs_r), tfscore[3][0])
+    #top five based on tfidf
+        for index in range(0,5):
+            docs_r.insert(len(docs_r), tfscore[index][0])
+
         
     
     #single word searched
