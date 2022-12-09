@@ -138,7 +138,7 @@ for result in ranked_results_bert:
 
 
 final_results = pd.DataFrame()
-final_results['faiss_ranking'] = [item['review'] for item in results]
+#final_results['faiss_ranking'] = [item['review'] for item in results]
 final_results['bert_score'] = [item['review'] for item in ranked_results_bert]
      
 
