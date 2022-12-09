@@ -47,7 +47,7 @@ def applyStemmer(doc):
 
 
 #Import CSV (one original and one copy)
-file = open('reviews1.csv',errors="ignore"  )
+file = open('reviews.csv',errors="ignore"  )
 reader = csv.reader(file, delimiter = ',')
 data_original = list(reader)
 
