@@ -19,7 +19,7 @@ from collections import Counter
 string.punctuation
 #nltk.download('stopwords')
 
-
+query = 'Is APPLE 13 expensive smartphon'
 
 #defining the function to remove punctuation
 def remove_punctuation(text):
@@ -47,24 +47,37 @@ def applyStemmer(doc):
 
 
 #Import CSV (one original and one copy)
-file = open('reviews.csv',errors="ignore"  )
+file = open('reviews2.csv',errors="ignore"  )
 reader = csv.reader(file, delimiter = ',')
 data_original = list(reader)
 
 
 ## remove remove_punctuation from copy and insert it in new_data(dictionary)
-
-new_data = []
-
+data_dic = {}
 for i in range(1,len(data_original)):
-    review = remove_punctuation(data_original[i][1])
-    new_data.append(review)
+    title = data_original[i][0]
+    review = remove_punctuation(data_original[i][1])#calling the remove punctuation function
+    if title in data_dic:
+        data_dic[title].append(review)
+    else:
+        data_dic[title] = [review]
+        
+# new_data = []
+# for i in range(1,len(data_original)):
+#     review = remove_punctuation(data_original[i][1])
+#     new_data.append(review)
+titles = list(data_dic.keys())
+for i, title in enumerate(titles):
+    titles[i] = remove_punctuation(title)
 
-
+new_dic= {}
+for i, key in enumerate(data_dic):
+    old_value = data_dic[key]
+    new_dic[titles[i]] = old_value
 
 alldocs_tokenized = []
 #REMOVE punctuation from a list of docs
-for index, i in enumerate(new_data):
+for index, i in enumerate(titles):
     doc = i
     text = apply_tokenizing(doc)
     alldocs_tokenized.append(text)
@@ -79,8 +92,8 @@ for x in range(len(alldocs_tokenized)):
     stopWordReview = applyStopWords(alldocs_tokenized[x])
     alldocs_tokenized[x] = stopWordReview
 
-for j in range(len(alldocs_tokenized)):
-    alldocs_tokenized[j] = applyStemmer(alldocs_tokenized[j])
+# for j in range(len(alldocs_tokenized)):
+#     alldocs_tokenized[j] = applyStemmer(alldocs_tokenized[j])
 
 
 #-----------------------------Reverse index TF-IDF-----------------------------
@@ -137,7 +150,7 @@ for doc in tokenized_docs:
 
 #_--------------------------------------Search engine--------------------------
 
-def search(query):
+def rank(query):
     try:
         #split sentence into individual words
         query = query.lower()
@@ -170,29 +183,11 @@ def search(query):
                 #fullcount_order = sorted(enddic.items(), key= lambda x:x[1], reverse=True)
                 fullidf_order = sorted(idfdic.items(), key=lambda x:x[1], reverse=True)
                 
-        '''
-        #make metric of what percentage of words appear in each doc
-        combo = []
-        allocations = {k: worddic.get(k, None) for k in (words)}
-        for worddex in list (allocations.values()):
-            for indexpos in worddex:
-                for indexz in indexpos:
-                    combo.append(indexz)
-        
-        comboindex = combo[::3]
-        combocount = Counter(comboindex)
-        for key in combocount:
-            combocount[key] = combocount[key] / numwords
-        
-        combocount_order = sorted(combocount.items(), key=lambda x:x[1], reverse=True)
-        '''
         return(query, words, fullidf_order)
-        #return(query, words, fullcount_order, combocount_order, fullidf_order)
+        #return(query, words, fullidf_order)
         '''
         0 query-> search query
         1 words -> actual words searched
-        2 fullcount_order -> num occur
-        3 combocount_order - > % of terms 
         4 fullidf_order - > tf-idf
         
         '''
@@ -204,41 +199,24 @@ def search(query):
 
 #-----------------------Rank and return---------------
 
-def rank(query):
-    search_results = search(query)
+def search(query):
+    rank_results = rank(query)
     
     #get metrics
     #num_score = search_results[2]
     #per_score = search_results[3]
-    tfscore =  search_results[2]
+    tfscore =  rank_results[2]
 
     docs_r = []
     
     #rule1: if high word order score & 100% percentage terms then put at top position
-    try: 
-        '''
-        first_candidates = []
+    try:
         
-        for candidates in order_score:
-            if candidates[1] > 1:
-                first_candidates.append(candidates[0])
-                
-        second_candidates = []
-        
-        for match_candidates in per_score:
-            if match_candidates[1] == 1:
-                second_candidates.append(match_candidates[0])
-            if match_candidates[1] == 1 and match_candidates[0] in first_candidates:
-                final_candidates.append(match_candidates[0])
-        '''
-    #rule3: add top tf-idf results
-    
     #top five based on tfidf
         for index in range(0,5):
             docs_r.insert(len(docs_r), tfscore[index][0])
-
         
-    
+               
     #single word searched
     except:
         othertops = [tfscore[0][0]]
@@ -247,14 +225,19 @@ def rank(query):
         for top in othertops:
             if top not in docs_r:
                 docs_r.insert(len(docs_r), top)
-                
         
+    titles_rsult = []
     for index, results in enumerate(docs_r):
         if index < 5:
-            print('RESULT', index+1, ":", new_data[results][:])
-    
-    
+            # print('RESULT', index+1, ":", new_data[results][:])
+            titles_rsult.append(titles[results][:])
+    return titles_rsult
 
+titles_return = search(query)
+
+data_reviews = []
+for title in titles_return:
+    data_reviews.append(new_dic[title])
 
 
 
