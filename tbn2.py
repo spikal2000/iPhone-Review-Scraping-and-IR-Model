@@ -19,7 +19,7 @@ from collections import Counter
 string.punctuation
 #nltk.download('stopwords')
 
-query = 'Is APPLE 13 expensive smartphon'
+query = 'Is APPLE 13 expensive smartphone'
 
 #defining the function to remove punctuation
 def remove_punctuation(text):
@@ -235,27 +235,43 @@ def search(query):
 
 titles_return = search(query)
 
+
+
+#---------------------S-BERT-----------------------
 data_reviews = []
 for title in titles_return:
-    data_reviews.append(new_dic[title])
+    for doc in new_dic[title]:
+        data_reviews.append(doc)
+    
+import pandas as pd
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
+df_reviews = pd.DataFrame({'review':data_reviews})
 
+# create a SentenceTransformer model using S-BERT
+model = SentenceTransformer('bert-base-nli-mean-tokens')
 
+# generate contextualized representations of the documents
+document_embeddings = model.encode(df_reviews['review'])
 
+# create a function to search the documents
+def search_docs(query: str) -> list:
+    # generate a contextualized representation of the query
+    query_embedding = model.encode([query])[0]
 
+    # calculate the cosine similarity between the query and each document
+    similarity_scores = cosine_similarity(query_embedding.reshape(1,-1), document_embeddings)
 
+    # sort the documents by their similarity score and return the top n results
+    n = 10
+    results = df_reviews.iloc[similarity_scores.argsort()[0][::-1][:n]]
+    return results['review'].values.tolist()
 
+results_docs = search_docs(query)
 
-
-
-
-
-
-
-
-
-
-
+for i, doc in enumerate(results_docs):
+    print(i+1,':', doc)
 
 
 
