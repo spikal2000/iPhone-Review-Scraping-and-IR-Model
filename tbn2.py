@@ -19,7 +19,7 @@ from collections import Counter
 string.punctuation
 #nltk.download('stopwords')
 
-query = 'Is APPLE 13 expensive smartphone'
+query = 'Batery broblems that Iphone 13 pro max has'
 
 #defining the function to remove punctuation
 def remove_punctuation(text):
@@ -47,7 +47,7 @@ def applyStemmer(doc):
 
 
 #Import CSV (one original and one copy)
-file = open('reviews2.csv',errors="ignore"  )
+file = open('reviews.csv',errors="ignore" )
 reader = csv.reader(file, delimiter = ',')
 data_original = list(reader)
 
@@ -242,7 +242,8 @@ data_reviews = []
 for title in titles_return:
     for doc in new_dic[title]:
         data_reviews.append(doc)
-    
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -272,6 +273,8 @@ results_docs = search_docs(query)
 
 for i, doc in enumerate(results_docs):
     print(i+1,':', doc)
+    
+
 
 
 
