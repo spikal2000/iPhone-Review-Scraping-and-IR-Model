@@ -19,8 +19,8 @@ from collections import Counter
 string.punctuation
 #nltk.download('stopwords')
 
-query = 'Does iphone 12 pro max has battery problems?'
-
+query = 'Does iphone 13 pro max has battery problems?'
+#query = 'Does iphone 12 pro max has screen problems?'
 #defining the function to remove punctuation
 def remove_punctuation(text):
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
@@ -92,8 +92,8 @@ for x in range(len(alldocs_tokenized)):
     stopWordReview = applyStopWords(alldocs_tokenized[x])
     alldocs_tokenized[x] = stopWordReview
 
-# for j in range(len(alldocs_tokenized)):
-#     alldocs_tokenized[j] = applyStemmer(alldocs_tokenized[j])
+for j in range(len(alldocs_tokenized)):
+    alldocs_tokenized[j] = applyStemmer(alldocs_tokenized[j])
 
 
 #-----------------------------Reverse index TF-IDF-----------------------------
@@ -162,6 +162,8 @@ def rank(query):
             words = query.split(' ')
         except:
             words = list(words)
+       
+        words = applyStemmer(words)
         #enddic = {}
         idfdic = {}
         closedic = {}
@@ -232,7 +234,7 @@ def search(query):
         
     titles_rsult = []
     for index, results in enumerate(docs_r):
-        if index < 5:
+        if index <=6:
             # print('RESULT', index+1, ":", new_data[results][:])
             titles_rsult.append(titles[results][:])
     return titles_rsult
@@ -255,30 +257,39 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 
 
-query_embedding = model.encode([query])
+from scipy.spatial.distance import cosine
 
 reviews_embeddings = model.encode(data_reviews)
 
 
+def run_sbert(query):
+    query_embedding = model.encode([query])
 # Use cosine similarity to compute the similarity between the query and each sentence
-from scipy.spatial.distance import cosine
-
-reviews_results = []
-
-for sentence, embedding in zip(data_reviews, reviews_embeddings):
-    similarity = 1 - cosine(query_embedding, embedding)
-    reviews_results.append((sentence, similarity))
 
 
-# Sort the results by descending similarity
-results = sorted(reviews_results, key=lambda x: x[1], reverse=True)
+    reviews_results = []
+
+    for sentence, embedding in zip(data_reviews, reviews_embeddings):
+        similarity = 1 - cosine(query_embedding, embedding)
+        reviews_results.append((sentence, similarity))
+
+
+    # Sort the results by descending similarity
+    results = sorted(reviews_results, key=lambda x: x[1], reverse=True)
+    
+    return results
+
+results_r = run_sbert(query)
 n=5
 for i in range(0,n):
-    print(i+1, results[i][0])
+    print(i+1, results_r[i][0])
 
-
-    
-
+ 
+def run_main(query, n):
+    titles_return = search(query)
+    results_docs = run_sbert(query)
+    for i in range(0,n):
+        print(i+1, results_docs[i][0])
 
 
 
