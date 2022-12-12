@@ -19,8 +19,9 @@ from collections import Counter
 string.punctuation
 #nltk.download('stopwords')
 
-query = 'Does iphone 13 pro max has battery problems?'
-#query = 'Does iphone 12 pro max has screen problems?'
+#QUERY ABOUT iphone 12,13
+#query = 'Does iphone 13 pro max has battery problems?'
+query = 'Does iphone 12 pro max has battery problems'
 #defining the function to remove punctuation
 def remove_punctuation(text):
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
