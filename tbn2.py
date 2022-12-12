@@ -19,7 +19,7 @@ from collections import Counter
 string.punctuation
 #nltk.download('stopwords')
 
-query = 'Batery broblems that Iphone 13 pro max has'
+query = 'Does iphone 12 pro max has battery problems?'
 
 #defining the function to remove punctuation
 def remove_punctuation(text):
@@ -126,6 +126,10 @@ def tfidf(word, doc, doclist):
 
 #Create a dictionary of words 
 #takes time
+
+#tdfidf is a measure of the importance of a word  ina  docs
+
+#cosine similarity is a measure of the similarity between 2 docs
 
 tokenized_docs = alldocs_tokenized
 #{word: [[doc indexer, [word pos], tf-idf]]}
@@ -244,35 +248,35 @@ for title in titles_return:
         data_reviews.append(doc)
 
 
-import pandas as pd
+
 from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-
-df_reviews = pd.DataFrame({'review':data_reviews})
-
-# create a SentenceTransformer model using S-BERT
+    
+# Initialize the SBERT model
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-# generate contextualized representations of the documents
-document_embeddings = model.encode(df_reviews['review'])
 
-# create a function to search the documents
-def search_docs(query: str) -> list:
-    # generate a contextualized representation of the query
-    query_embedding = model.encode([query])[0]
+query_embedding = model.encode([query])
 
-    # calculate the cosine similarity between the query and each document
-    similarity_scores = cosine_similarity(query_embedding.reshape(1,-1), document_embeddings)
+reviews_embeddings = model.encode(data_reviews)
 
-    # sort the documents by their similarity score and return the top n results
-    n = 10
-    results = df_reviews.iloc[similarity_scores.argsort()[0][::-1][:n]]
-    return results['review'].values.tolist()
 
-results_docs = search_docs(query)
+# Use cosine similarity to compute the similarity between the query and each sentence
+from scipy.spatial.distance import cosine
 
-for i, doc in enumerate(results_docs):
-    print(i+1,':', doc)
+reviews_results = []
+
+for sentence, embedding in zip(data_reviews, reviews_embeddings):
+    similarity = 1 - cosine(query_embedding, embedding)
+    reviews_results.append((sentence, similarity))
+
+
+# Sort the results by descending similarity
+results = sorted(reviews_results, key=lambda x: x[1], reverse=True)
+n=5
+for i in range(0,n):
+    print(i+1, results[i][0])
+
+
     
 
 
