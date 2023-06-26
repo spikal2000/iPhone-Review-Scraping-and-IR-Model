@@ -54,4 +54,5 @@ To run the IR model script, make sure you've installed the necessary dependencie
 
 > The IRmodel.py script includes a hardcoded query for testing the information retrieval system. If you want to use your own query, you will need to modify the query variable in the IRmodel.py script.
 
-> These scripts are for educational purposes and not intended for use in applications that violate Amazon's or any other platform's terms of service. Please use them responsibly.
+> Disclaimer
+>> These scripts are for educational purposes and not intended for use in applications that violate Amazon's or any other platform's terms of service. Please use them responsibly.
