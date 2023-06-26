@@ -1,4 +1,4 @@
-# SearchEngines_WebMining__Project
+# Unleashing Amazon Insights
 
  This project contains two Python scripts: scraping.py and IRmodel.py.
 # scraping.py
