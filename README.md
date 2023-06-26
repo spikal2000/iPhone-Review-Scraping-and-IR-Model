@@ -23,7 +23,7 @@ How it works:
     Uses the TF-IDF algorithm to identify the most relevant product titles based on the user's query.
     After identifying the most relevant titles, it utilizes sBERT to find the most relevant reviews.
 
-# Usage
+#
 scraping.py
 
 To run the scraping script, you will need to install some dependencies:
