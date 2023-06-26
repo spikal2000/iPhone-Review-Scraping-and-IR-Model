@@ -23,7 +23,7 @@ How it works:
     Uses the TF-IDF algorithm to identify the most relevant product titles based on the user's query.
     After identifying the most relevant titles, it utilizes sBERT to find the most relevant reviews.
 
-#
+# Usage
 scraping.py
 
 To run the scraping script, you will need to install some dependencies:
@@ -53,6 +53,6 @@ To run the IR model script, make sure you've installed the necessary dependencie
 > The scraping.py script is designed to scrape reviews of iPhone models from Amazon, specifically iPhone 12 and 13 models. If you wish to scrape reviews for other > products or models, you'll need to modify the query in the scraping.py script.
 
 > The IRmodel.py script includes a hardcoded query for testing the information retrieval system. If you want to use your own query, you will need to modify the query variable in the IRmodel.py script.
-# ________
+# 
 > Disclaimer
 >> These scripts are for educational purposes and not intended for use in applications that violate Amazon's or any other platform's terms of service. Please use them responsibly.
