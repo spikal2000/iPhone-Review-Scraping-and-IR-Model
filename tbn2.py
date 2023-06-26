@@ -18,7 +18,8 @@ from collections import Counter
 #library that contains punctuation
 string.punctuation
 #nltk.download('stopwords')
-
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 #QUERY ABOUT iphone 12,13
 #query = 'Does iphone 13 pro max has battery problems?'
 query = 'Does iphone 12 pro max has battery problems'
@@ -245,6 +246,29 @@ titles_return = search(query)
 
 
 #---------------------S-BERT-----------------------
+
+# Load the sBERT model
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+def run_sbert(docs, query, top_k=5):
+    # Encode the documents
+    docs_embeddings = model.encode(docs)
+    
+    # Encode the query
+    query_embedding = model.encode([query])[0]
+    
+    # Compute the cosine similarity between the query and all documents
+    cosine_scores = cosine_similarity([query_embedding], docs_embeddings)[0]
+    
+    # Get the indices of the top_k most similar documents
+    top_k_indices = np.argsort(cosine_scores)[-top_k:][::-1]
+    
+    # Get the top_k most similar documents
+    top_k_docs = [docs[i] for i in top_k_indices]
+    
+    return top_k_docs
+
+# Get the docs based on the most simlar title(that we found from tf-idf)
 data_reviews = []
 for title in titles_return:
     for doc in new_dic[title]:
@@ -252,45 +276,12 @@ for title in titles_return:
 
 
 
-from sentence_transformers import SentenceTransformer
-    
-# Initialize the SBERT model
-model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-
-from scipy.spatial.distance import cosine
-
-reviews_embeddings = model.encode(data_reviews)
-
-
-def run_sbert(query):
-    query_embedding = model.encode([query])
-# Use cosine similarity to compute the similarity between the query and each sentence
-
-
-    reviews_results = []
-
-    for sentence, embedding in zip(data_reviews, reviews_embeddings):
-        similarity = 1 - cosine(query_embedding, embedding)
-        reviews_results.append((sentence, similarity))
-
-
-    # Sort the results by descending similarity
-    results = sorted(reviews_results, key=lambda x: x[1], reverse=True)
-    
-    return results
-
-results_r = run_sbert(query)
-n=5
+n = 5
+results_r = run_sbert(data_reviews,query, n)
 for i in range(0,n):
-    print(i+1, results_r[i][0])
+    print(i+1,":", results_r[i])
 
- 
-def run_main(query, n):
-    titles_return = search(query)
-    results_docs = run_sbert(query)
-    for i in range(0,n):
-        print(i+1, results_docs[i][0])
 
 
 
