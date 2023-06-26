@@ -17,12 +17,12 @@ from nltk.stem.porter import *
 from collections import Counter 
 #library that contains punctuation
 string.punctuation
-#nltk.download('stopwords')
+nltk.download('stopwords')
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 #QUERY ABOUT iphone 12,13
-#query = 'Does iphone 13 pro max has battery problems?'
 query = 'Does iphone 12 pro max has battery problems'
+
 #defining the function to remove punctuation
 def remove_punctuation(text):
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
