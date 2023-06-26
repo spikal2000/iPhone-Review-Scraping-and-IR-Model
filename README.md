@@ -48,7 +48,7 @@ To run the IR model script, make sure you've installed the necessary dependencie
 >> Or you can use the reviews.csv file and skip the scraping.py.
 
 
-# Additional Information
+# > Additional Information
 
 > The scraping.py script is designed to scrape reviews of iPhone models from Amazon, specifically iPhone 12 and 13 models. If you wish to scrape reviews for other > products or models, you'll need to modify the query in the scraping.py script.
 
